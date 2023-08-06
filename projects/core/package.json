@@ -1,11 +1,11 @@
 {
-  "name": "@basegate.io/core",
+  "name": "@basegate_io/core",
   "description": "🔵 Core smart contracts of BaseGate",
   "license": "GPL-2.0-or-later",
   "publishConfig": {
     "access": "public"
   },
-  "version": "1.0.2",
+  "version": "1.0.0",
   "keywords": [
     "basegate.io",
     "core"
@@ -13,8 +13,8 @@
   "files": [
     "contracts/interfaces",
     "contracts/libraries",
-    "artifacts/contracts/PancakeV3Factory.sol/PancakeV3Factory.json",
-    "artifacts/contracts/PancakeV3Pool.sol/PancakeV3Pool.json",
+    "artifacts/contracts/BaseGateFactory.sol/BaseGateFactory.json",
+    "artifacts/contracts/BaseGatePool.sol/BaseGatePool.json",
     "artifacts/contracts/interfaces/**/*.json",
     "!artifacts/contracts/interfaces/**/*.dbg.json"
   ],
@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@basegate_io/common": "*",
-    "@pancakeswap/v3-lm-pool": "*",
+    "@basegate_io/lm-pool": "*",
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-etherscan": "^2.1.8",
     "@nomiclabs/hardhat-waffle": "^2.0.1",

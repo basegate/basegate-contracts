@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity >=0.5.0;
 
-/// @title The interface for the PancakeSwap V3 Factory
-/// @notice The PancakeSwap V3 Factory facilitates creation of PancakeSwap V3 pools and control over the protocol fees
+/// @title The interface for the BaseGate Factory
+/// @notice The BaseGate Factory facilitates creation of BaseGate pools and control over the protocol fees
 interface IBaseGateFactory {
     struct TickSpacingExtraInfo {
         bool whitelistRequested;

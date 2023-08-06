@@ -1,6 +1,6 @@
-import { verifyContract } from "@pancakeswap/common/verify";
-import { sleep } from "@pancakeswap/common/sleep";
-import { configs } from "@pancakeswap/common/config";
+import { verifyContract } from "@basegate_io/common/verify";
+import { sleep } from "@basegate_io/common/sleep";
+import { configs } from "@basegate_io/common/config";
 
 async function main() {
   const networkName = network.name;
@@ -9,8 +9,8 @@ async function main() {
   if (!config) {
     throw new Error(`No config found for network ${networkName}`);
   }
-  const deployedContracts_masterchef_v3 = await import(`@pancakeswap/masterchef-v3/deployments/${networkName}.json`);
-  const deployedContracts_v3_periphery = await import(`@pancakeswap/v3-periphery/deployments/${networkName}.json`);
+  const deployedContracts_masterchef_v3 = await import(`@basegate_io/masterchef/deployments/${networkName}.json`);
+  const deployedContracts_v3_periphery = await import(`@basegate_io/periphery/deployments/${networkName}.json`);
 
   // Verify masterChefV3
   console.log("Verify masterChefV3");

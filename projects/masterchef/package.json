@@ -1,5 +1,5 @@
 {
-  "name": "@basegate.io/masterchef",
+  "name": "@basegate_io/masterchef",
   "version": "1.0.0",
   "description": "BaseGate MasterChef",
   "publishConfig": {
@@ -35,10 +35,10 @@
     "@openzeppelin/hardhat-upgrades": "^1.22.1",
     "@openzeppelin/test-helpers": "^0.5.11",
     "@pancakeswap/eslint-config-pancake": "^1.2.0",
-    "@pancakeswap/pancake-swap-lib": "0.0.4",
-    "@pancakeswap/v3-core": "*",
-    "@pancakeswap/v3-lm-pool": "*",
-    "@pancakeswap/v3-periphery": "*",
+    "@basegate_io/basegate-swap-lib": "*",
+    "@basegate_io/core": "*",
+    "@basegate_io/lm-pool": "*",
+    "@basegate_io/periphery": "*",
     "@types/chai": "^4.2.21",
     "@types/mocha": "^8.2.2",
     "@types/node": "^14.14.35",

@@ -2,7 +2,7 @@ import { ethers, network } from 'hardhat'
 import { configs } from '@basegate.io/common/config'
 import { tryVerify } from '@basegate.io/common/verify'
 import fs from 'fs'
-import { abi } from '@basegate.io/v3-core/artifacts/contracts/PancakeV3Factory.sol/PancakeV3Factory.json'
+import { abi } from '@basegate_io/core/artifacts/contracts/PancakeV3Factory.sol/PancakeV3Factory.json'
 
 import { parseEther } from 'ethers/lib/utils'
 const currentNetwork = network.name
@@ -16,7 +16,7 @@ async function main() {
     throw new Error(`No config found for network ${networkName}`)
   }
 
-  const v3DeployedContracts = await import(`@basegate.io/v3-core/deployments/${networkName}.json`)
+  const v3DeployedContracts = await import(`@basegate_io/core/deployments/${networkName}.json`)
   const mcV3DeployedContracts = await import(`@basegate.io/masterchef-v3/deployments/${networkName}.json`)
 
   const pancakeV3Factory_address = v3DeployedContracts.PancakeV3Factory

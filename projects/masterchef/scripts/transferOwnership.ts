@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
 import { ethers, run, network } from "hardhat";
 import { Contract } from "ethers";
-import { configs } from "@pancakeswap/common/config";
-import { tryVerify } from "@pancakeswap/common/verify";
+import { configs } from "@basegate_io/common/config";
+import { tryVerify } from "@basegate_io/common/verify";
 import { writeFileSync } from "fs";
 
 const abi = [
@@ -110,7 +110,7 @@ const abi = [
       },
       {
         indexed: true,
-        internalType: "contract IPancakeV3Pool",
+        internalType: "contract IBaseGatePool",
         name: "v3Pool",
         type: "address",
       },
@@ -593,7 +593,7 @@ const abi = [
         type: "uint256",
       },
       {
-        internalType: "contract IPancakeV3Pool",
+        internalType: "contract IBaseGatePool",
         name: "_v3Pool",
         type: "address",
       },
@@ -1056,7 +1056,7 @@ const abi = [
         type: "uint256",
       },
       {
-        internalType: "contract IPancakeV3Pool",
+        internalType: "contract IBaseGatePool",
         name: "v3Pool",
         type: "address",
       },

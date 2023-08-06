@@ -12,9 +12,9 @@ function factoryV2() external view returns (address)
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | address | Returns the address of the PancakeSwap V2 factory |
+| Name | Type    | Description                                 |
+| ---- | ------- | ------------------------------------------- |
+| [0]  | address | Returns the address of the BaseGate factory |
 
 ### positionManager
 
@@ -24,7 +24,6 @@ function positionManager() external view returns (address)
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | address | Returns the address of PancakeSwap V3 NFT position manager |
-
+| Name | Type    | Description                                          |
+| ---- | ------- | ---------------------------------------------------- |
+| [0]  | address | Returns the address of BaseGate NFT position manager |

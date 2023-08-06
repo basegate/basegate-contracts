@@ -1,4 +1,4 @@
-import { tryVerify } from '@pancakeswap/common/verify'
+import { tryVerify } from '@basegate_io/common/verify'
 import { ContractFactory } from 'ethers'
 import { ethers, network } from 'hardhat'
 import fs from 'fs'
@@ -53,8 +53,7 @@ async function main() {
   }
 
   // Set FactoryAddress for pancakeV3PoolDeployer.
-  await pancakeV3PoolDeployer.setFactoryAddress(pancakeV3Factory_address);
-
+  await pancakeV3PoolDeployer.setFactoryAddress(pancakeV3Factory_address)
 
   const contracts = {
     PancakeV3Factory: pancakeV3Factory_address,

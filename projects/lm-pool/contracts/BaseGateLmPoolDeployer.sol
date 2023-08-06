@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity =0.7.6;
 
-import '@basegate.io/core/contracts/interfaces/IBaseGateFactory.sol';
-import '@basegate.io/periphery/contracts/interfaces/INonfungiblePositionManager.sol';
+import '@basegate_io/core/contracts/interfaces/IBaseGateFactory.sol';
+import '@basegate_io/periphery/contracts/interfaces/INonfungiblePositionManager.sol';
 
 import './BaseGateLmPool.sol';
 

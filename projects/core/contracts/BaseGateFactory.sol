@@ -5,8 +5,8 @@ import './interfaces/IBaseGateFactory.sol';
 import './interfaces/IBaseGatePoolDeployer.sol';
 import './interfaces/IBaseGatePool.sol';
 
-/// @title Canonical PancakeSwap V3 factory
-/// @notice Deploys PancakeSwap V3 pools and manages ownership and control over pool protocol fees
+/// @title Canonical BaseGate factory
+/// @notice Deploys BaseGate pools and manages ownership and control over pool protocol fees
 contract BaseGateFactory is IBaseGateFactory {
     /// @inheritdoc IBaseGateFactory
     address public override owner;

@@ -1,6 +1,6 @@
 # Solidity API
 
-## TestPancakeV3SwapPay
+## TestBaseGateSwapPay
 
 ### swap
 
@@ -8,9 +8,8 @@
 function swap(address pool, address recipient, bool zeroForOne, uint160 sqrtPriceX96, int256 amountSpecified, uint256 pay0, uint256 pay1) external
 ```
 
-### pancakeV3SwapCallback
+### BaseGateSwapCallback
 
 ```solidity
-function pancakeV3SwapCallback(int256, int256, bytes data) external
+function BaseGateSwapCallback(int256, int256, bytes data) external
 ```
-

@@ -1,6 +1,6 @@
 import { ethers, network } from 'hardhat'
-import { configs } from '@pancakeswap/common/config'
-import { tryVerify } from '@pancakeswap/common/verify'
+import { configs } from '@basegate_io/common/config'
+import { tryVerify } from '@basegate_io/common/verify'
 import { writeFileSync } from 'fs'
 
 async function main() {
@@ -11,11 +11,11 @@ async function main() {
     throw new Error(`No config found for network ${networkName}`)
   }
 
-  const v3DeployedContracts = await import(`@pancakeswap/v3-core/deployments/${networkName}.json`)
-  const v3PeripheryDeployedContracts = await import(`@pancakeswap/v3-periphery/deployments/${networkName}.json`)
+  const v3DeployedContracts = await import(`@basegate_io/core/deployments/${networkName}.json`)
+  const v3PeripheryDeployedContracts = await import(`@basegate_io/periphery/deployments/${networkName}.json`)
 
-  const pancakeV3PoolDeployer_address = v3DeployedContracts.PancakeV3PoolDeployer
-  const pancakeV3Factory_address = v3DeployedContracts.PancakeV3Factory
+  const baseGatePoolDeployer_address = v3DeployedContracts.BaseGatePoolDeployer
+  const baseGateFactory_address = v3DeployedContracts.BaseGateFactory
   const positionManager_address = v3PeripheryDeployedContracts.NonfungiblePositionManager
 
   /** SmartRouterHelper */
@@ -34,8 +34,8 @@ async function main() {
   })
   const smartRouter = await SmartRouter.deploy(
     config.v2Factory,
-    pancakeV3PoolDeployer_address,
-    pancakeV3Factory_address,
+    baseGatePoolDeployer_address,
+    baseGateFactory_address,
     positionManager_address,
     config.stableFactory,
     config.stableInfo,
@@ -45,8 +45,8 @@ async function main() {
 
   // await tryVerify(smartRouter, [
   //   config.v2Factory,
-  //   pancakeV3PoolDeployer_address,
-  //   pancakeV3Factory_address,
+  //   baseGatePoolDeployer_address,
+  //   baseGateFactory_address,
   //   positionManager_address,
   //   config.stableFactory,
   //   config.stableInfo,
@@ -60,8 +60,8 @@ async function main() {
     },
   })
   const mixedRouteQuoterV1 = await MixedRouteQuoterV1.deploy(
-    pancakeV3PoolDeployer_address,
-    pancakeV3Factory_address,
+    baseGatePoolDeployer_address,
+    baseGateFactory_address,
     config.v2Factory,
     config.stableFactory,
     config.WNATIVE
@@ -69,8 +69,8 @@ async function main() {
   console.log('MixedRouteQuoterV1 deployed to:', mixedRouteQuoterV1.address)
 
   // await tryVerify(mixedRouteQuoterV1, [
-  //   pancakeV3PoolDeployer_address,
-  //   pancakeV3Factory_address,
+  //   baseGatePoolDeployer_address,
+  //   baseGateFactory_address,
   //   config.v2Factory,
   //   config.stableFactory,
   //   config.WNATIVE,
@@ -82,10 +82,10 @@ async function main() {
       SmartRouterHelper: smartRouterHelper.address,
     },
   })
-  const quoterV2 = await QuoterV2.deploy(pancakeV3PoolDeployer_address, pancakeV3Factory_address, config.WNATIVE)
+  const quoterV2 = await QuoterV2.deploy(baseGatePoolDeployer_address, baseGateFactory_address, config.WNATIVE)
   console.log('QuoterV2 deployed to:', quoterV2.address)
 
-  // await tryVerify(quoterV2, [pancakeV3PoolDeployer_address, pancakeV3Factory_address, config.WNATIVE])
+  // await tryVerify(quoterV2, [baseGatePoolDeployer_address, baseGateFactory_address, config.WNATIVE])
 
   /** TokenValidator */
   const TokenValidator = await ethers.getContractFactory('TokenValidator', {

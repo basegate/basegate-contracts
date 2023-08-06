@@ -1,6 +1,6 @@
 # Solidity API
 
-## IPancakeV3Pool
+## IBaseGatePool
 
 ### factory
 
@@ -31,4 +31,3 @@ function fee() external view returns (uint24)
 ```solidity
 function lmPool() external view returns (address)
 ```
-

@@ -25,7 +25,7 @@ import './interfaces/callback/IBaseGateMintCallback.sol';
 import './interfaces/callback/IBaseGateSwapCallback.sol';
 import './interfaces/callback/IBaseGateFlashCallback.sol';
 
-import '@pancakeswap/v3-lm-pool/contracts/interfaces/IPancakeV3LmPool.sol';
+import '@basegate_io/lm-pool/contracts/interfaces/IBaseGateV3LmPool.sol';
 
 contract BaseGatePool is IBaseGatePool {
     using LowGasSafeMath for uint256;
@@ -103,7 +103,7 @@ contract BaseGatePool is IBaseGatePool {
     Oracle.Observation[65535] public override observations;
 
     // liquidity mining
-    IPancakeV3LmPool public lmPool;
+    IBaseGateLmPool public lmPool;
 
     event SetLmPoolEvent(address addr);
 
@@ -897,7 +897,7 @@ contract BaseGatePool is IBaseGatePool {
     }
 
     function setLmPool(address _lmPool) external override onlyFactoryOrFactoryOwner {
-        lmPool = IPancakeV3LmPool(_lmPool);
+        lmPool = IBaseGateLmPool(_lmPool);
         emit SetLmPoolEvent(address(_lmPool));
     }
 }
