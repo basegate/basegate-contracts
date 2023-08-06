@@ -25,7 +25,7 @@ import './interfaces/callback/IBaseGateMintCallback.sol';
 import './interfaces/callback/IBaseGateSwapCallback.sol';
 import './interfaces/callback/IBaseGateFlashCallback.sol';
 
-import '@basegate_io/lm-pool/contracts/interfaces/IBaseGateV3LmPool.sol';
+import '@basegate_io/lm-pool/contracts/interfaces/IBaseGateLmPool.sol';
 
 contract BaseGatePool is IBaseGatePool {
     using LowGasSafeMath for uint256;

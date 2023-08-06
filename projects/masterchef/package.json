@@ -35,7 +35,7 @@
     "@openzeppelin/hardhat-upgrades": "^1.22.1",
     "@openzeppelin/test-helpers": "^0.5.11",
     "@pancakeswap/eslint-config-pancake": "^1.2.0",
-    "@basegate_io/basegate-swap-lib": "*",
+    "@basegate_io/lib": "*",
     "@basegate_io/core": "*",
     "@basegate_io/lm-pool": "*",
     "@basegate_io/periphery": "*",

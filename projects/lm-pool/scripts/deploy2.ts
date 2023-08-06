@@ -1,8 +1,8 @@
 import { ethers, network } from 'hardhat'
-import { configs } from '@basegate.io/common/config'
-import { tryVerify } from '@basegate.io/common/verify'
+import { configs } from '@basegate_io/common/config'
+import { tryVerify } from '@basegate_io/common/verify'
 import fs from 'fs'
-import { abi } from '@basegate_io/core/artifacts/contracts/PancakeV3Factory.sol/PancakeV3Factory.json'
+import { abi } from '@basegate_io/core/artifacts/contracts/BaseGateFactory.sol/BaseGateFactory.json'
 
 import { parseEther } from 'ethers/lib/utils'
 const currentNetwork = network.name
@@ -17,21 +17,21 @@ async function main() {
   }
 
   const v3DeployedContracts = await import(`@basegate_io/core/deployments/${networkName}.json`)
-  const mcV3DeployedContracts = await import(`@basegate.io/masterchef-v3/deployments/${networkName}.json`)
+  const mcDeployedContracts = await import(`@basegate_io/masterchef/deployments/${networkName}.json`)
 
-  const pancakeV3Factory_address = v3DeployedContracts.PancakeV3Factory
+  const BaseGateFactory_address = v3DeployedContracts.BaseGateFactory
 
-  const PancakeV3LmPoolDeployer = await ethers.getContractFactory('PancakeV3LmPoolDeployer')
-  const pancakeV3LmPoolDeployer = await PancakeV3LmPoolDeployer.deploy(mcV3DeployedContracts.MasterChefV3)
+  const BaseGateLmPoolDeployer = await ethers.getContractFactory('BaseGateLmPoolDeployer')
+  const baseGateLmPoolDeployer = await BaseGateLmPoolDeployer.deploy(mcDeployedContracts.MasterChefV3)
 
-  console.log('pancakeV3LmPoolDeployer deployed to:', pancakeV3LmPoolDeployer.address)
+  console.log('BaseGateLmPoolDeployer deployed to:', baseGateLmPoolDeployer.address)
 
-  const pancakeV3Factory = new ethers.Contract(pancakeV3Factory_address, abi, owner)
+  const BaseGateFactory = new ethers.Contract(BaseGateFactory_address, abi, owner)
 
-  await pancakeV3Factory.setLmPoolDeployer(pancakeV3LmPoolDeployer.address)
+  await BaseGateFactory.setLmPoolDeployer(baseGateLmPoolDeployer.address)
 
   const contracts = {
-    PancakeV3LmPoolDeployer: pancakeV3LmPoolDeployer.address,
+    BaseGateLmPoolDeployer: baseGateLmPoolDeployer.address,
   }
   fs.writeFileSync(`./deployments/${networkName}.json`, JSON.stringify(contracts, null, 2))
 }

@@ -12,9 +12,9 @@ async function main() {
   const deployedContracts_masterchef_v3 = await import(`@basegate_io/masterchef/deployments/${networkName}.json`)
   const deployedContracts_v3_lm_pool = await import(`@basegate_io/lm-pool/deployments/${networkName}.json`)
 
-  // Verify pancakeV3LmPoolDeployer
-  console.log('Verify pancakeV3LmPoolDeployer')
-  await verifyContract(deployedContracts_v3_lm_pool.PancakeV3LmPoolDeployer, [
+  // Verify BaseGateLmPoolDeployer
+  console.log('Verify BaseGateLmPoolDeployer')
+  await verifyContract(deployedContracts_v3_lm_pool.BaseGateLmPoolDeployer, [
     deployedContracts_masterchef_v3.MasterChefV3,
   ])
   await sleep(10000)
