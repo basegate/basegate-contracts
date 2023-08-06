@@ -6,9 +6,9 @@ import fs from 'fs'
 type ContractJson = { abi: any; bytecode: string }
 const artifacts: { [name: string]: ContractJson } = {
   // eslint-disable-next-line global-require
-  PancakeV3PoolDeployer: require('../artifacts/contracts/PancakeV3PoolDeployer.sol/PancakeV3PoolDeployer.json'),
+  BaseGatePoolDeployer: require('../artifacts/contracts/BaseGatePoolDeployer.sol/BaseGatePoolDeployer.json'),
   // eslint-disable-next-line global-require
-  PancakeV3Factory: require('../artifacts/contracts/PancakeV3Factory.sol/PancakeV3Factory.json'),
+  BaseGateFactory: require('../artifacts/contracts/BaseGateFactory.sol/BaseGateFactory.json'),
 }
 
 async function main() {
@@ -16,48 +16,44 @@ async function main() {
   const networkName = network.name
   console.log('owner', owner.address)
 
-  let pancakeV3PoolDeployer_address = ''
-  let pancakeV3PoolDeployer
-  const PancakeV3PoolDeployer = new ContractFactory(
-    artifacts.PancakeV3PoolDeployer.abi,
-    artifacts.PancakeV3PoolDeployer.bytecode,
+  let baseGatePoolDeployer_address = ''
+  let baseGatePoolDeployer
+  const BaseGatePoolDeployer = new ContractFactory(
+    artifacts.BaseGatePoolDeployer.abi,
+    artifacts.BaseGatePoolDeployer.bytecode,
     owner
   )
-  if (!pancakeV3PoolDeployer_address) {
-    pancakeV3PoolDeployer = await PancakeV3PoolDeployer.deploy()
+  if (!baseGatePoolDeployer_address) {
+    baseGatePoolDeployer = await BaseGatePoolDeployer.deploy()
 
-    pancakeV3PoolDeployer_address = pancakeV3PoolDeployer.address
-    console.log('pancakeV3PoolDeployer', pancakeV3PoolDeployer_address)
+    baseGatePoolDeployer_address = baseGatePoolDeployer.address
+    console.log('baseGatePoolDeployer', baseGatePoolDeployer_address)
   } else {
-    pancakeV3PoolDeployer = new ethers.Contract(
-      pancakeV3PoolDeployer_address,
-      artifacts.PancakeV3PoolDeployer.abi,
-      owner
-    )
+    baseGatePoolDeployer = new ethers.Contract(baseGatePoolDeployer_address, artifacts.BaseGatePoolDeployer.abi, owner)
   }
 
-  let pancakeV3Factory_address = ''
-  let pancakeV3Factory
-  if (!pancakeV3Factory_address) {
-    const PancakeV3Factory = new ContractFactory(
-      artifacts.PancakeV3Factory.abi,
-      artifacts.PancakeV3Factory.bytecode,
+  let baseGateFactory_address = ''
+  let baseGateFactory
+  if (!baseGateFactory_address) {
+    const BaseGateFactory = new ContractFactory(
+      artifacts.BaseGateFactory.abi,
+      artifacts.BaseGateFactory.bytecode,
       owner
     )
-    pancakeV3Factory = await PancakeV3Factory.deploy(pancakeV3PoolDeployer_address)
+    baseGateFactory = await BaseGateFactory.deploy(baseGatePoolDeployer_address)
 
-    pancakeV3Factory_address = pancakeV3Factory.address
-    console.log('pancakeV3Factory', pancakeV3Factory_address)
+    baseGateFactory_address = baseGateFactory.address
+    console.log('baseGateFactory', baseGateFactory_address)
   } else {
-    pancakeV3Factory = new ethers.Contract(pancakeV3Factory_address, artifacts.PancakeV3Factory.abi, owner)
+    baseGateFactory = new ethers.Contract(baseGateFactory_address, artifacts.BaseGateFactory.abi, owner)
   }
 
-  // Set FactoryAddress for pancakeV3PoolDeployer.
-  await pancakeV3PoolDeployer.setFactoryAddress(pancakeV3Factory_address)
+  // Set FactoryAddress for baseGatePoolDeployer.
+  await baseGatePoolDeployer.setFactoryAddress(baseGateFactory_address)
 
   const contracts = {
-    PancakeV3Factory: pancakeV3Factory_address,
-    PancakeV3PoolDeployer: pancakeV3PoolDeployer_address,
+    BaseGateFactory: baseGateFactory_address,
+    BaseGatePoolDeployer: baseGatePoolDeployer_address,
   }
 
   fs.writeFileSync(`./deployments/${networkName}.json`, JSON.stringify(contracts, null, 2))

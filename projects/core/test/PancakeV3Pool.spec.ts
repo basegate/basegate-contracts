@@ -1,9 +1,9 @@
 import { ethers, waffle } from 'hardhat'
 import { BigNumber, BigNumberish, constants, Wallet } from 'ethers'
 import { TestERC20 } from '../typechain-types/contracts/test/TestERC20'
-import { PancakeV3Factory } from '../typechain-types/contracts/PancakeV3Factory'
-import { MockTimePancakeV3Pool } from '../typechain-types/contracts/test/MockTimePancakeV3Pool'
-import { TestPancakeV3SwapPay } from '../typechain-types/contracts/test/TestPancakeV3SwapPay'
+import { BaseGateFactory } from '../typechain-types/contracts/BaseGateFactory'
+import { MockTimeBaseGatePool } from '../typechain-types/contracts/test/MockTimeBaseGatePool'
+import { TestBaseGateSwapPay } from '../typechain-types/contracts/test/TestBaseGateSwapPay'
 import checkObservationEquals from './shared/checkObservationEquals'
 import { expect } from './shared/expect'
 
@@ -27,8 +27,8 @@ import {
   MIN_SQRT_RATIO,
   SwapToPriceFunction,
 } from './shared/utilities'
-import { TestPancakeV3Callee } from '../typechain-types/contracts/test/TestPancakeV3Callee'
-import { TestPancakeV3ReentrantCallee } from '../typechain-types/contracts/test/TestPancakeV3ReentrantCallee'
+import { TestBaseGateCallee } from '../typechain-types/contracts/test/TestBaseGateCallee'
+import { TestBaseGateReentrantCallee } from '../typechain-types/contracts/test/TestBaseGateReentrantCallee'
 import { TickMathTest } from '../typechain-types/contracts/test/TickMathTest'
 import { SwapMathTest } from '../typechain-types/contracts/test/SwapMathTest'
 
@@ -36,17 +36,17 @@ const createFixtureLoader = waffle.createFixtureLoader
 
 type ThenArg<T> = T extends PromiseLike<infer U> ? U : T
 
-describe('PancakeV3Pool', () => {
+describe('BaseGatePool', () => {
   let wallet: Wallet, other: Wallet
 
   let token0: TestERC20
   let token1: TestERC20
   let token2: TestERC20
 
-  let factory: PancakeV3Factory
-  let pool: MockTimePancakeV3Pool
+  let factory: BaseGateFactory
+  let pool: MockTimeBaseGatePool
 
-  let swapTarget: TestPancakeV3Callee
+  let swapTarget: TestBaseGateCallee
 
   let swapToLowerPrice: SwapToPriceFunction
   let swapToHigherPrice: SwapToPriceFunction
@@ -610,7 +610,7 @@ describe('PancakeV3Pool', () => {
 
   // the combined amount of liquidity that the pool is initialized with (including the 1 minimum liquidity that is burned)
   const initializeLiquidityAmount = expandTo18Decimals(2)
-  async function initializeAtZeroTick(pool: MockTimePancakeV3Pool): Promise<void> {
+  async function initializeAtZeroTick(pool: MockTimeBaseGatePool): Promise<void> {
     await pool.initialize(encodePriceSqrt(1, 1))
     const tickSpacing = await pool.tickSpacing()
     const [min, max] = [getMinTick(tickSpacing), getMaxTick(tickSpacing)]
@@ -1673,8 +1673,8 @@ describe('PancakeV3Pool', () => {
 
     it('cannot reenter from swap callback', async () => {
       const reentrant = (await (
-        await ethers.getContractFactory('TestPancakeV3ReentrantCallee')
-      ).deploy()) as TestPancakeV3ReentrantCallee
+        await ethers.getContractFactory('TestBaseGateReentrantCallee')
+      ).deploy()) as TestBaseGateReentrantCallee
 
       // the tests happen in solidity
       await expect(reentrant.swapToReenter(pool.address)).to.be.revertedWith('Unable to reenter')
@@ -1930,10 +1930,10 @@ describe('PancakeV3Pool', () => {
   })
 
   describe('swap underpayment tests', () => {
-    let underpay: TestPancakeV3SwapPay
+    let underpay: TestBaseGateSwapPay
     beforeEach('deploy swap test', async () => {
-      const underpayFactory = await ethers.getContractFactory('TestPancakeV3SwapPay')
-      underpay = (await underpayFactory.deploy()) as TestPancakeV3SwapPay
+      const underpayFactory = await ethers.getContractFactory('TestBaseGateSwapPay')
+      underpay = (await underpayFactory.deploy()) as TestBaseGateSwapPay
       await token0.approve(underpay.address, constants.MaxUint256)
       await token1.approve(underpay.address, constants.MaxUint256)
       await pool.initialize(encodePriceSqrt(1, 1))

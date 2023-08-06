@@ -1,8 +1,8 @@
 import { Wallet } from 'ethers'
 import { ethers, waffle } from 'hardhat'
 import { TestERC20 } from '../typechain-types/contracts/test/TestERC20'
-import { PancakeV3Factory } from '../typechain-types/contracts/PancakeV3Factory'
-import { MockTimePancakeV3Pool } from '../typechain-types/contracts/test/MockTimePancakeV3Pool'
+import { BaseGateFactory } from '../typechain-types/contracts/BaseGateFactory'
+import { MockTimeBaseGatePool } from '../typechain-types/contracts/test/MockTimeBaseGatePool'
 import { expect } from './shared/expect'
 
 import { poolFixture } from './shared/fixtures'
@@ -18,8 +18,8 @@ import {
   getMaxTick,
   expandTo18Decimals,
 } from './shared/utilities'
-import { TestPancakeV3Router } from '../typechain-types/contracts/test/TestPancakeV3Router'
-import { TestPancakeV3Callee } from '../typechain-types/contracts/test/TestPancakeV3Callee'
+import { TestBaseGateRouter } from '../typechain-types/contracts/test/TestBaseGateRouter'
+import { TestBaseGateCallee } from '../typechain-types/contracts/test/TestBaseGateCallee'
 
 const feeAmount = FeeAmount.MEDIUM
 const tickSpacing = TICK_SPACINGS[feeAmount]
@@ -28,15 +28,15 @@ const createFixtureLoader = waffle.createFixtureLoader
 
 type ThenArg<T> = T extends PromiseLike<infer U> ? U : T
 
-describe('PancakeV3Pool', () => {
+describe('BaseGatePool', () => {
   let wallet: Wallet, other: Wallet
 
   let token0: TestERC20
   let token1: TestERC20
   let token2: TestERC20
-  let factory: PancakeV3Factory
-  let pool0: MockTimePancakeV3Pool
-  let pool1: MockTimePancakeV3Pool
+  let factory: BaseGateFactory
+  let pool0: MockTimeBaseGatePool
+  let pool1: MockTimeBaseGatePool
 
   let pool0Functions: PoolFunctions
   let pool1Functions: PoolFunctions
@@ -44,8 +44,8 @@ describe('PancakeV3Pool', () => {
   let minTick: number
   let maxTick: number
 
-  let swapTargetCallee: TestPancakeV3Callee
-  let swapTargetRouter: TestPancakeV3Router
+  let swapTargetCallee: TestBaseGateCallee
+  let swapTargetRouter: TestBaseGateRouter
 
   let loadFixture: ReturnType<typeof createFixtureLoader>
   let createPool: ThenArg<ReturnType<typeof poolFixture>>['createPool']
@@ -66,7 +66,7 @@ describe('PancakeV3Pool', () => {
       spacing: number,
       firstToken: TestERC20,
       secondToken: TestERC20
-    ): Promise<[MockTimePancakeV3Pool, any]> => {
+    ): Promise<[MockTimeBaseGatePool, any]> => {
       const pool = await createPool(amount, spacing, firstToken, secondToken)
       const poolFunctions = createPoolFunctions({
         swapTarget: swapTargetCallee,

@@ -5,14 +5,14 @@ async function main() {
   const networkName = network.name
   const deployedContracts = await import(`@basegate_io/v3-core/deployments/${networkName}.json`)
 
-  // Verify PancakeV3PoolDeployer
-  console.log('Verify PancakeV3PoolDeployer')
-  await verifyContract(deployedContracts.PancakeV3PoolDeployer)
+  // Verify BaseGatePoolDeployer
+  console.log('Verify BaseGatePoolDeployer')
+  await verifyContract(deployedContracts.BaseGatePoolDeployer)
   await sleep(10000)
 
-  // Verify pancakeV3Factory
-  console.log('Verify pancakeV3Factory')
-  await verifyContract(deployedContracts.PancakeV3Factory, [deployedContracts.PancakeV3PoolDeployer])
+  // Verify baseGateFactory
+  console.log('Verify baseGateFactory')
+  await verifyContract(deployedContracts.BaseGateFactory, [deployedContracts.BaseGatePoolDeployer])
   await sleep(10000)
 }
 

@@ -1,9 +1,9 @@
 import Decimal from 'decimal.js'
 import { BigNumber, BigNumberish, Wallet } from 'ethers'
 import { ethers, waffle } from 'hardhat'
-import { MockTimePancakeV3Pool } from '../typechain-types/contracts/test/MockTimePancakeV3Pool'
+import { MockTimeBaseGatePool } from '../typechain-types/contracts/test/MockTimeBaseGatePool'
 import { TickMathTest } from '../typechain-types/contracts/test/TickMathTest'
-import { PancakeV3PoolSwapTest } from '../typechain-types/contracts/test/PancakeV3PoolSwapTest'
+import { BaseGatePoolSwapTest } from '../typechain-types/contracts/test/BaseGatePoolSwapTest'
 import { expect } from './shared/expect'
 
 import { poolFixture } from './shared/fixtures'
@@ -48,7 +48,7 @@ function applySqrtRatioBipsHundredthsDelta(sqrtRatio: BigNumber, bipsHundredths:
   )
 }
 
-describe('PancakeV3Pool arbitrage tests', () => {
+describe('BaseGatePool arbitrage tests', () => {
   let wallet: Wallet, arbitrageur: Wallet
 
   let loadFixture: ReturnType<typeof createFixtureLoader>
@@ -90,8 +90,8 @@ describe('PancakeV3Pool arbitrage tests', () => {
                 pool,
               })
 
-            const testerFactory = await ethers.getContractFactory('PancakeV3PoolSwapTest')
-            const tester = (await testerFactory.deploy()) as PancakeV3PoolSwapTest
+            const testerFactory = await ethers.getContractFactory('BaseGatePoolSwapTest')
+            const tester = (await testerFactory.deploy()) as BaseGatePoolSwapTest
 
             const tickMathFactory = await ethers.getContractFactory('TickMathTest')
             const tickMath = (await tickMathFactory.deploy()) as TickMathTest
@@ -113,9 +113,9 @@ describe('PancakeV3Pool arbitrage tests', () => {
           let swapToHigherPrice: SwapFunction
           let swapToLowerPrice: SwapFunction
           let swapExact1For0: SwapFunction
-          let pool: MockTimePancakeV3Pool
+          let pool: MockTimeBaseGatePool
           let mint: MintFunction
-          let tester: PancakeV3PoolSwapTest
+          let tester: BaseGatePoolSwapTest
           let tickMath: TickMathTest
 
           beforeEach('load the fixture', async () => {

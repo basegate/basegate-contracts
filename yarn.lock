@@ -301,6 +301,11 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
+"@basegate_io/lib@*":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@basegate_io/lib/-/lib-0.0.1.tgz#9be4074e00ec8e425a67caa4c51d239da007bbbf"
+  integrity sha512-a+1jcYK/KJimU1KZMwSUz4QSqgQvIotm85CiLKNZthu6R6U0wmpF2/x5rAzyFx76DORdBZLcp/otoJEhEt4ATQ==
+
 "@chainlink/contracts@^0.6.1":
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/@chainlink/contracts/-/contracts-0.6.1.tgz#8842b57e755793cbdbcbc45277fb5d179c993e19"
@@ -1577,11 +1582,6 @@
     eslint-plugin-jsx-a11y "^6.4.1"
     eslint-plugin-react "^7.21.5"
     eslint-plugin-react-hooks "^4.0.0"
-
-"@pancakeswap/pancake-swap-lib@0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@pancakeswap/pancake-swap-lib/-/pancake-swap-lib-0.0.4.tgz#b00f78c3aa249e02146e366322f2d65154a893ef"
-  integrity sha512-efauTqrPQX0P2X159Z5YnAVNmD8jvFxei9iIbDU850MG7KuupfqNTfDoN2/dCMo2GomSFokG2MjW0GenZc4EFg==
 
 "@resolver-engine/core@^0.3.3":
   version "0.3.3"

@@ -1,33 +1,33 @@
 import { BigNumber } from 'ethers'
 import { ethers } from 'hardhat'
-import { MockTimePancakeV3Pool } from '../../typechain-types/contracts/test/MockTimePancakeV3Pool'
+import { MockTimeBaseGatePool } from '../../typechain-types/contracts/test/MockTimeBaseGatePool'
 import { TestERC20 } from '../../typechain-types/contracts/test/TestERC20'
-import { PancakeV3Factory } from '../../typechain-types/contracts/PancakeV3Factory'
-import { PancakeV3PoolDeployer } from '../../typechain-types/contracts/PancakeV3PoolDeployer'
-import { TestPancakeV3Callee } from '../../typechain-types/contracts/test/TestPancakeV3Callee'
-import { TestPancakeV3Router } from '../../typechain-types/contracts/test/TestPancakeV3Router'
-import { MockTimePancakeV3PoolDeployer } from '../../typechain-types/contracts/test/MockTimePancakeV3PoolDeployer'
-import PancakeV3LmPoolArtifact from '@basegate_io/lm-pool/artifacts/contracts/PancakeV3LmPool.sol/PancakeV3LmPool.json'
+import { BaseGateFactory } from '../../typechain-types/contracts/BaseGateFactory'
+import { BaseGatePoolDeployer } from '../../typechain-types/contracts/BaseGatePoolDeployer'
+import { TestBaseGateCallee } from '../../typechain-types/contracts/test/TestBaseGateCallee'
+import { TestBaseGateRouter } from '../../typechain-types/contracts/test/TestBaseGateRouter'
+import { MockTimeBaseGatePoolDeployer } from '../../typechain-types/contracts/test/MockTimeBaseGatePoolDeployer'
+import BaseGateLmPoolArtifact from '@basegate_io/lm-pool/artifacts/contracts/BaseGateLmPool.sol/BaseGateLmPool.json'
 
 import { Fixture } from 'ethereum-waffle'
 
 interface FactoryFixture {
-  factory: PancakeV3Factory
+  factory: BaseGateFactory
 }
 
 interface DeployerFixture {
-  deployer: PancakeV3PoolDeployer
+  deployer: BaseGatePoolDeployer
 }
 
 async function factoryFixture(): Promise<FactoryFixture> {
   const { deployer } = await deployerFixture()
-  const factoryFactory = await ethers.getContractFactory('PancakeV3Factory')
-  const factory = (await factoryFactory.deploy(deployer.address)) as PancakeV3Factory
+  const factoryFactory = await ethers.getContractFactory('BaseGateFactory')
+  const factory = (await factoryFactory.deploy(deployer.address)) as BaseGateFactory
   return { factory }
 }
 async function deployerFixture(): Promise<DeployerFixture> {
-  const deployerFactory = await ethers.getContractFactory('PancakeV3PoolDeployer')
-  const deployer = (await deployerFactory.deploy()) as PancakeV3PoolDeployer
+  const deployerFactory = await ethers.getContractFactory('BaseGatePoolDeployer')
+  const deployer = (await deployerFactory.deploy()) as BaseGatePoolDeployer
   return { deployer }
 }
 
@@ -53,14 +53,14 @@ async function tokensFixture(): Promise<TokensFixture> {
 type TokensAndFactoryFixture = FactoryFixture & TokensFixture
 
 interface PoolFixture extends TokensAndFactoryFixture {
-  swapTargetCallee: TestPancakeV3Callee
-  swapTargetRouter: TestPancakeV3Router
+  swapTargetCallee: TestBaseGateCallee
+  swapTargetRouter: TestBaseGateRouter
   createPool(
     fee: number,
     tickSpacing: number,
     firstToken?: TestERC20,
     secondToken?: TestERC20
-  ): Promise<MockTimePancakeV3Pool>
+  ): Promise<MockTimeBaseGatePool>
 }
 
 // Monday, October 5, 2020 9:00:00 AM GMT-05:00
@@ -70,16 +70,16 @@ export const poolFixture: Fixture<PoolFixture> = async function (): Promise<Pool
   const { factory } = await factoryFixture()
   const { token0, token1, token2 } = await tokensFixture()
 
-  const MockTimePancakeV3PoolDeployerFactory = await ethers.getContractFactory('MockTimePancakeV3PoolDeployer')
-  const MockTimePancakeV3PoolFactory = await ethers.getContractFactory('MockTimePancakeV3Pool')
+  const MockTimeBaseGatePoolDeployerFactory = await ethers.getContractFactory('MockTimeBaseGatePoolDeployer')
+  const MockTimeBaseGatePoolFactory = await ethers.getContractFactory('MockTimeBaseGatePool')
 
-  const calleeContractFactory = await ethers.getContractFactory('TestPancakeV3Callee')
-  const routerContractFactory = await ethers.getContractFactory('TestPancakeV3Router')
+  const calleeContractFactory = await ethers.getContractFactory('TestBaseGateCallee')
+  const routerContractFactory = await ethers.getContractFactory('TestBaseGateRouter')
 
-  const swapTargetCallee = (await calleeContractFactory.deploy()) as TestPancakeV3Callee
-  const swapTargetRouter = (await routerContractFactory.deploy()) as TestPancakeV3Router
+  const swapTargetCallee = (await calleeContractFactory.deploy()) as TestBaseGateCallee
+  const swapTargetRouter = (await routerContractFactory.deploy()) as TestBaseGateRouter
 
-  const PancakeV3LmPoolFactory = await ethers.getContractFactoryFromArtifact(PancakeV3LmPoolArtifact)
+  const BaseGateLmPoolFactory = await ethers.getContractFactoryFromArtifact(BaseGateLmPoolArtifact)
 
   return {
     token0,
@@ -89,8 +89,7 @@ export const poolFixture: Fixture<PoolFixture> = async function (): Promise<Pool
     swapTargetCallee,
     swapTargetRouter,
     createPool: async (fee, tickSpacing, firstToken = token0, secondToken = token1) => {
-      const mockTimePoolDeployer =
-        (await MockTimePancakeV3PoolDeployerFactory.deploy()) as MockTimePancakeV3PoolDeployer
+      const mockTimePoolDeployer = (await MockTimeBaseGatePoolDeployerFactory.deploy()) as MockTimeBaseGatePoolDeployer
       const tx = await mockTimePoolDeployer.deploy(
         factory.address,
         firstToken.address,
@@ -102,22 +101,18 @@ export const poolFixture: Fixture<PoolFixture> = async function (): Promise<Pool
       const receipt = await tx.wait()
       const poolAddress = receipt.events?.[0].args?.pool as string
 
-      const mockTimePancakeV3Pool = MockTimePancakeV3PoolFactory.attach(poolAddress) as MockTimePancakeV3Pool
+      const mockTimeBaseGatePool = MockTimeBaseGatePoolFactory.attach(poolAddress) as MockTimeBaseGatePool
 
       await (
         await factory.setLmPool(
           poolAddress,
           (
-            await PancakeV3LmPoolFactory.deploy(
-              poolAddress,
-              ethers.constants.AddressZero,
-              Math.floor(Date.now() / 1000)
-            )
+            await BaseGateLmPoolFactory.deploy(poolAddress, ethers.constants.AddressZero, Math.floor(Date.now() / 1000))
           ).address
         )
       ).wait()
 
-      return mockTimePancakeV3Pool
+      return mockTimeBaseGatePool
     },
   }
 }
