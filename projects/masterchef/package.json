@@ -1,5 +1,5 @@
 {
-  "name": "@basegate/masterchef",
+  "name": "@basegate.io/masterchef",
   "version": "1.0.0",
   "description": "BaseGate MasterChef",
   "publishConfig": {
@@ -8,7 +8,7 @@
   "author": "BaseGate",
   "license": "MIT",
   "keywords": [
-    "basegate",
+    "basegate.io",
     "masterchef"
   ],
   "files": [

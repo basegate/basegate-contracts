@@ -1,7 +1,7 @@
 {
-  "name": "@pancakeswap/common",
+  "name": "@basegate_io/common",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "compile": "echo 'No compile needed'",
     "test": "echo 'No test needed'"

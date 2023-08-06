@@ -1,5 +1,5 @@
 {
-  "name": "@basegate/core",
+  "name": "@basegate.io/core",
   "description": "🔵 Core smart contracts of BaseGate",
   "license": "GPL-2.0-or-later",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "version": "1.0.2",
   "keywords": [
-    "basegate",
+    "basegate.io",
     "core"
   ],
   "files": [
@@ -22,7 +22,7 @@
     "node": ">=10"
   },
   "devDependencies": {
-    "@pancakeswap/common": "*",
+    "@basegate_io/common": "*",
     "@pancakeswap/v3-lm-pool": "*",
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-etherscan": "^2.1.8",

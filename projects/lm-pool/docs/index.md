@@ -149,9 +149,9 @@ _Deploys a LmPool_
 
 #### Parameters
 
-| Name | Type                   | Description                                     |
-| ---- | ---------------------- | ----------------------------------------------- |
-| pool | contract IBaseGatePool | The contract address of the PancakeSwap V3 pool |
+| Name | Type                   | Description                              |
+| ---- | ---------------------- | ---------------------------------------- |
+| pool | contract IBaseGatePool | The contract address of the BasGate pool |
 
 ## IBaseGateLmPool
 

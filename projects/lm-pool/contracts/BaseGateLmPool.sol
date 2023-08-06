@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity =0.7.6;
 
-import '@basegate/core/contracts/libraries/LowGasSafeMath.sol';
-import '@basegate/core/contracts/libraries/SafeCast.sol';
-import '@basegate/core/contracts/libraries/FullMath.sol';
-import '@basegate/core/contracts/libraries/FixedPoint128.sol';
-import '@basegate/core/contracts/interfaces/IBaseGatePool.sol';
+import '@basegate.io/core/contracts/libraries/LowGasSafeMath.sol';
+import '@basegate.io/core/contracts/libraries/SafeCast.sol';
+import '@basegate.io/core/contracts/libraries/FullMath.sol';
+import '@basegate.io/core/contracts/libraries/FixedPoint128.sol';
+import '@basegate.io/core/contracts/interfaces/IBaseGatePool.sol';
 
 import './libraries/LmTick.sol';
 

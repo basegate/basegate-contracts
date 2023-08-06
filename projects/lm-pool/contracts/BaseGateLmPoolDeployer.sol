@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity =0.7.6;
 
-import '@basegate/core/contracts/interfaces/IBaseGateFactory.sol';
-import '@basegate/periphery/contracts/interfaces/INonfungiblePositionManager.sol';
+import '@basegate.io/core/contracts/interfaces/IBaseGateFactory.sol';
+import '@basegate.io/periphery/contracts/interfaces/INonfungiblePositionManager.sol';
 
 import './BaseGateLmPool.sol';
 
@@ -23,7 +23,7 @@ contract BaseGateLmPoolDeployer {
     }
 
     /// @dev Deploys a LmPool
-    /// @param pool The contract address of the PancakeSwap V3 pool
+    /// @param pool The contract address of the BaseGate pool
     function deploy(IBaseGatePool pool) external onlyMasterChef returns (IBaseGateLmPool lmPool) {
         lmPool = new BaseGateLmPool(address(pool), masterChef, uint32(block.timestamp));
         IBaseGateFactory(INonfungiblePositionManager(IMasterChefV3(masterChef).nonfungiblePositionManager()).factory())
