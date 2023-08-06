@@ -1,5 +1,5 @@
 {
-  "name": "pancake-v3",
+  "name": "basegate",
   "private": true,
   "workspaces": [
     "projects/*",
