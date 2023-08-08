@@ -13,15 +13,15 @@ if (!network || !networks[network]) {
   throw new Error(`env NETWORK: ${network}`)
 }
 
-await $`yarn workspace @pancakeswap/core run hardhat run scripts/deploy.ts --network ${network}`
+await $`yarn workspace @basegate_io/core run hardhat run scripts/deploy.ts --network ${network}`
 
-await $`yarn workspace @pancakeswap/periphery run hardhat run scripts/deploy2.ts --network ${network}`
+await $`yarn workspace @basegate_io/periphery run hardhat run scripts/deploy2.ts --network ${network}`
 
-await $`yarn workspace @pancakeswap/smart-router run hardhat run scripts/deploy2.ts --network ${network}`
+await $`yarn workspace @basegate_io/smart-router run hardhat run scripts/deploy2.ts --network ${network}`
 
-await $`yarn workspace @pancakeswap/masterchef run hardhat run scripts/deploy2.ts --network ${network}`
+await $`yarn workspace @basegate_io/masterchef run hardhat run scripts/deploy2.ts --network ${network}`
 
-await $`yarn workspace @pancakeswap/lm-pool run hardhat run scripts/deploy2.ts --network ${network}`
+await $`yarn workspace @basegate_io/lm-pool run hardhat run scripts/deploy2.ts --network ${network}`
 
 console.log(chalk.blue('Done!'))
 

@@ -35,12 +35,12 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: {
-      'base-testnet': process.env.ETHERSCAN_API_KEY ?? '',
-      'base-mainnet': process.env.ETHERSCAN_API_KEY ?? '',
+      baseTestnet: process.env.ETHERSCAN_API_KEY ?? '',
+      baseMainnet: process.env.ETHERSCAN_API_KEY ?? '',
     },
     customChains: [
       {
-        network: 'base-testnet',
+        network: 'baseTestnet',
         chainId: 84531,
         urls: {
           apiURL: 'https://api-goerli.basescan.org/api',
@@ -48,7 +48,7 @@ const config: HardhatUserConfig = {
         },
       },
       {
-        network: 'base-mainnet',
+        network: 'baseMainnet',
         chainId: 8453,
         urls: {
           apiURL: 'https://api.basescan.org/api',
