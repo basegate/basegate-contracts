@@ -1,11 +1,13 @@
 import { ethers, network } from 'hardhat'
 import { configs } from '@basegate_io/common/config'
-import { tryVerify } from '@basegate_io/common/verify'
 import { writeFileSync } from 'fs'
 
 async function main() {
   // Remember to update the init code hash in SC for different chains before deploying
+  const [owner] = await ethers.getSigners()
   const networkName = network.name
+  console.log('owner', owner.address)
+
   const config = configs[networkName as keyof typeof configs]
   if (!config) {
     throw new Error(`No config found for network ${networkName}`)

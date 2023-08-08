@@ -1,11 +1,7 @@
 import { ethers, network } from 'hardhat'
 import { configs } from '@basegate_io/common/config'
-import { tryVerify } from '@basegate_io/common/verify'
 import fs from 'fs'
 import { abi } from '@basegate_io/core/artifacts/contracts/BaseGateFactory.sol/BaseGateFactory.json'
-
-import { parseEther } from 'ethers/lib/utils'
-const currentNetwork = network.name
 
 async function main() {
   const [owner] = await ethers.getSigners()

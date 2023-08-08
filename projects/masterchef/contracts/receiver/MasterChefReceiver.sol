@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "../interfaces/IMasterChefV3.sol";
 import "../interfaces/IMasterChefV2.sol";
 
-contract MasterChefV3Receiver is Ownable {
+contract MasterChefReceiver is Ownable {
     using SafeERC20 for IERC20;
 
     IERC20 public immutable Cake;

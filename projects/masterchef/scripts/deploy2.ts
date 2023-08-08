@@ -22,10 +22,10 @@ async function main() {
   const v3PeripheryDeployedContracts = await import(`@basegate_io/periphery/deployments/${networkName}.json`);
   const positionManager_address = v3PeripheryDeployedContracts.NonfungiblePositionManager;
 
-  const MasterChefV3 = await ethers.getContractFactory("MasterChefV3");
-  const masterChefV3 = await MasterChefV3.deploy(config.cake, positionManager_address, config.WNATIVE);
+  const MasterChef = await ethers.getContractFactory("MasterChef");
+  const masterChef = await MasterChef.deploy(config.cake, positionManager_address, config.WNATIVE);
 
-  console.log("masterChefV3 deployed to:", masterChefV3.address);
+  console.log("masterChef deployed to:", masterChef.address);
   // await tryVerify(masterChefV3, [config.cake, positionManager_address]);
 
   // Write the address to a file.
@@ -33,7 +33,7 @@ async function main() {
     `./deployments/${networkName}.json`,
     JSON.stringify(
       {
-        MasterChefV3: masterChefV3.address,
+        MasterChefV3: masterChef.address,
       },
       null,
       2
