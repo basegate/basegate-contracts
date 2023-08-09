@@ -23,7 +23,7 @@ async function main() {
   const positionManager_address = v3PeripheryDeployedContracts.NonfungiblePositionManager;
 
   const MasterChef = await ethers.getContractFactory("MasterChef");
-  const masterChef = await MasterChef.deploy(config.cake, positionManager_address, config.WNATIVE);
+  const masterChef = await MasterChef.deploy(config.bgate, positionManager_address, config.WNATIVE);
 
   console.log("masterChef deployed to:", masterChef.address);
   // await tryVerify(masterChefV3, [config.cake, positionManager_address]);

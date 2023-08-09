@@ -60,8 +60,8 @@ contract MasterChef is INonfungiblePositionManagerStruct, Multicall, Ownable, Re
     /// @notice baseGatePoolAddressPid[baseGatePoolAddress] => pid
     mapping(address => uint256) public baseGatePoolAddressPid;
 
-    /// @notice Address of CAKE contract.
-    IERC20 public immutable CAKE;
+    /// @notice Address of BGATE contract.
+    IERC20 public BGATE;
 
     /// @notice Address of WETH contract.
     address public immutable WETH;
@@ -102,13 +102,13 @@ contract MasterChef is INonfungiblePositionManagerStruct, Multicall, Ownable, Re
     uint256 constant Q128 = 0x100000000000000000000000000000000;
     uint256 constant MAX_U256 = type(uint256).max;
 
-    /// @notice Record the cake amount belong to MasterChefV3.
-    uint256 public cakeAmountBelongToMC;
+    /// @notice Record the BGATE amount belong to MasterChefV3.
+    uint256 public BGATEAmountBelongToMC;
 
     error ZeroAddress();
     error NotOwnerOrOperator();
     error NoBalance();
-    error NotPancakeNFT();
+    error NotBaseGateNFT();
     error InvalidNFT();
     error NotOwner();
     error NoLiquidity();
@@ -149,8 +149,8 @@ contract MasterChef is INonfungiblePositionManagerStruct, Multicall, Ownable, Re
         uint256 indexed periodNumber,
         uint256 startTime,
         uint256 endTime,
-        uint256 cakePerSecond,
-        uint256 cakeAmount
+        uint256 BGATEPerSecond,
+        uint256 BGATEAmount
     );
     event UpdateUpkeepPeriod(
         uint256 indexed periodNumber,
@@ -184,40 +184,44 @@ contract MasterChef is INonfungiblePositionManagerStruct, Multicall, Ownable, Re
         _;
     }
 
-    /// @param _CAKE The CAKE token contract address.
+    /// @param _BGATE The BGATE token contract address.
     /// @param _nonfungiblePositionManager the NFT position manager contract address.
-    constructor(IERC20 _CAKE, INonfungiblePositionManager _nonfungiblePositionManager, address _WETH) {
-        CAKE = _CAKE;
+    constructor(IERC20 _BGATE, INonfungiblePositionManager _nonfungiblePositionManager, address _WETH) {
+        BGATE = _BGATE;
         nonfungiblePositionManager = _nonfungiblePositionManager;
         WETH = _WETH;
     }
 
-    /// @notice Returns the cake per second , period end time.
+    function setBGATE(IERC20 _BGATE) external onlyOwner {
+        BGATE = _BGATE;
+    }
+
+    /// @notice Returns the BGATE per second , period end time.
     /// @param _pid The pool pid.
-    /// @return cakePerSecond Cake reward per second.
+    /// @return BGATEPerSecond Cake reward per second.
     /// @return endTime Period end time.
-    function getLatestPeriodInfoByPid(uint256 _pid) public view returns (uint256 cakePerSecond, uint256 endTime) {
+    function getLatestPeriodInfoByPid(uint256 _pid) public view returns (uint256 BGATEPerSecond, uint256 endTime) {
         if (totalAllocPoint > 0) {
-            cakePerSecond = (latestPeriodCakePerSecond * poolInfo[_pid].allocPoint) / totalAllocPoint;
+            BGATEPerSecond = (latestPeriodCakePerSecond * poolInfo[_pid].allocPoint) / totalAllocPoint;
         }
         endTime = latestPeriodEndTime;
     }
 
-    /// @notice Returns the cake per second , period end time. This is for liquidity mining pool.
+    /// @notice Returns the BGATE per second , period end time. This is for liquidity mining pool.
     /// @param _baseGatePool Address of the V3 pool.
-    /// @return cakePerSecond Cake reward per second.
+    /// @return BGATEPerSecond Cake reward per second.
     /// @return endTime Period end time.
-    function getLatestPeriodInfo(address _baseGatePool) public view returns (uint256 cakePerSecond, uint256 endTime) {
+    function getLatestPeriodInfo(address _baseGatePool) public view returns (uint256 BGATEPerSecond, uint256 endTime) {
         if (totalAllocPoint > 0) {
-            cakePerSecond =
+            BGATEPerSecond =
                 (latestPeriodCakePerSecond * poolInfo[baseGatePoolAddressPid[_baseGatePool]].allocPoint) /
                 totalAllocPoint;
         }
         endTime = latestPeriodEndTime;
     }
 
-    /// @notice View function for checking pending CAKE rewards.
-    /// @dev The pending cake amount is based on the last state in LMPool. The actual amount will happen whenever liquidity changes or harvest.
+    /// @notice View function for checking pending BGATE rewards.
+    /// @dev The pending BGATE amount is based on the last state in LMPool. The actual amount will happen whenever liquidity changes or harvest.
     /// @param _tokenId Token Id of NFT.
     /// @return reward Pending reward.
     function pendingCake(uint256 _tokenId) external view returns (uint256 reward) {
@@ -250,7 +254,7 @@ contract MasterChef is INonfungiblePositionManagerStruct, Multicall, Ownable, Re
 
     function setReceiver(address _receiver) external onlyOwner {
         if (_receiver == address(0)) revert ZeroAddress();
-        if (CAKE.allowance(_receiver, address(this)) != type(uint256).max) revert();
+        if (BGATE.allowance(_receiver, address(this)) != type(uint256).max) revert();
         receiver = _receiver;
         emit NewReceiver(_receiver);
     }
@@ -298,7 +302,7 @@ contract MasterChef is INonfungiblePositionManagerStruct, Multicall, Ownable, Re
         emit AddPool(poolLength, _allocPoint, _baseGatePool, lmPool);
     }
 
-    /// @notice Update the given pool's CAKE allocation point. Can only be called by the owner.
+    /// @notice Update the given pool's BGATE allocation point. Can only be called by the owner.
     /// @param _pid The id of the pool. See `poolInfo`.
     /// @param _allocPoint New number of allocation points for the pool.
     /// @param _withUpdate Whether call "massUpdatePools" operation.
@@ -332,7 +336,7 @@ contract MasterChef is INonfungiblePositionManagerStruct, Multicall, Ownable, Re
         uint256 _tokenId,
         bytes calldata
     ) external nonReentrant returns (bytes4) {
-        if (msg.sender != address(nonfungiblePositionManager)) revert NotPancakeNFT();
+        if (msg.sender != address(nonfungiblePositionManager)) revert NotBaseGateNFT();
         DepositCache memory cache;
         (
             ,
@@ -374,7 +378,7 @@ contract MasterChef is INonfungiblePositionManagerStruct, Multicall, Ownable, Re
         return this.onERC721Received.selector;
     }
 
-    /// @notice harvest cake from pool.
+    /// @notice harvest BGATE from pool.
     /// @param _tokenId Token Id of NFT.
     /// @param _to Address to.
     /// @return reward Cake reward.
@@ -628,15 +632,15 @@ contract MasterChef is INonfungiblePositionManagerStruct, Multicall, Ownable, Re
     /// @param _to The to address.
     function transferToken(address _token, address _to) internal {
         uint256 balance = IERC20(_token).balanceOf(address(this));
-        // Need to reduce cakeAmountBelongToMC.
-        if (_token == address(CAKE)) {
+        // Need to reduce BGATEAmountBelongToMC.
+        if (_token == address(BGATE)) {
             unchecked {
-                // In fact balance should always be greater than or equal to cakeAmountBelongToMC, but in order to avoid any unknown issue, we added this check.
-                if (balance >= cakeAmountBelongToMC) {
-                    balance -= cakeAmountBelongToMC;
+                // In fact balance should always be greater than or equal to BGATEAmountBelongToMC, but in order to avoid any unknown issue, we added this check.
+                if (balance >= BGATEAmountBelongToMC) {
+                    balance -= BGATEAmountBelongToMC;
                 } else {
                     // This should never happend.
-                    cakeAmountBelongToMC = balance;
+                    BGATEAmountBelongToMC = balance;
                     balance = 0;
                 }
             }
@@ -672,15 +676,15 @@ contract MasterChef is INonfungiblePositionManagerStruct, Multicall, Ownable, Re
     /// @param recipient The destination address of the token
     function sweepToken(address token, uint256 amountMinimum, address recipient) external nonReentrant {
         uint256 balanceToken = IERC20(token).balanceOf(address(this));
-        // Need to reduce cakeAmountBelongToMC.
-        if (token == address(CAKE)) {
+        // Need to reduce BGATEAmountBelongToMC.
+        if (token == address(BGATE)) {
             unchecked {
-                // In fact balance should always be greater than or equal to cakeAmountBelongToMC, but in order to avoid any unknown issue, we added this check.
-                if (balanceToken >= cakeAmountBelongToMC) {
-                    balanceToken -= cakeAmountBelongToMC;
+                // In fact balance should always be greater than or equal to BGATEAmountBelongToMC, but in order to avoid any unknown issue, we added this check.
+                if (balanceToken >= BGATEAmountBelongToMC) {
+                    balanceToken -= BGATEAmountBelongToMC;
                 } else {
                     // This should never happend.
-                    cakeAmountBelongToMC = balanceToken;
+                    BGATEAmountBelongToMC = balanceToken;
                     balanceToken = 0;
                 }
             }
@@ -710,15 +714,15 @@ contract MasterChef is INonfungiblePositionManagerStruct, Multicall, Ownable, Re
     }
 
     /// @notice Upkeep period.
-    /// @param _amount The amount of cake injected.
+    /// @param _amount The amount of BGATE injected.
     /// @param _duration The period duration.
     /// @param _withUpdate Whether call "massUpdatePools" operation.
     function upkeep(uint256 _amount, uint256 _duration, bool _withUpdate) external onlyReceiver {
-        // Transfer cake token from receiver.
-        CAKE.safeTransferFrom(receiver, address(this), _amount);
-        // Update cakeAmountBelongToMC
+        // Transfer BGATE token from receiver.
+        BGATE.safeTransferFrom(receiver, address(this), _amount);
+        // Update BGATEAmountBelongToMC
         unchecked {
-            cakeAmountBelongToMC += _amount;
+            BGATEAmountBelongToMC += _amount;
         }
 
         if (_withUpdate) massUpdatePools();
@@ -728,24 +732,24 @@ contract MasterChef is INonfungiblePositionManagerStruct, Multicall, Ownable, Re
         if (_duration >= MIN_DURATION && _duration <= MAX_DURATION) duration = _duration;
         uint256 currentTime = block.timestamp;
         uint256 endTime = currentTime + duration;
-        uint256 cakePerSecond;
-        uint256 cakeAmount = _amount;
+        uint256 BGATEPerSecond;
+        uint256 BGATEAmount = _amount;
         if (latestPeriodEndTime > currentTime) {
             uint256 remainingCake = ((latestPeriodEndTime - currentTime) * latestPeriodCakePerSecond) / PRECISION;
             emit UpdateUpkeepPeriod(latestPeriodNumber, latestPeriodEndTime, currentTime, remainingCake);
-            cakeAmount += remainingCake;
+            BGATEAmount += remainingCake;
         }
-        cakePerSecond = (cakeAmount * PRECISION) / duration;
+        BGATEPerSecond = (BGATEAmount * PRECISION) / duration;
         unchecked {
             latestPeriodNumber++;
             latestPeriodStartTime = currentTime + 1;
             latestPeriodEndTime = endTime;
-            latestPeriodCakePerSecond = cakePerSecond;
+            latestPeriodCakePerSecond = BGATEPerSecond;
         }
-        emit NewUpkeepPeriod(latestPeriodNumber, currentTime + 1, endTime, cakePerSecond, cakeAmount);
+        emit NewUpkeepPeriod(latestPeriodNumber, currentTime + 1, endTime, BGATEPerSecond, BGATEAmount);
     }
 
-    /// @notice Update cake reward for all the liquidity mining pool.
+    /// @notice Update BGATE reward for all the liquidity mining pool.
     function massUpdatePools() internal {
         uint32 currentTime = uint32(block.timestamp);
         for (uint256 pid = 1; pid <= poolLength; pid++) {
@@ -757,7 +761,7 @@ contract MasterChef is INonfungiblePositionManagerStruct, Multicall, Ownable, Re
         }
     }
 
-    /// @notice Update cake reward for the liquidity mining pool.
+    /// @notice Update BGATE reward for the liquidity mining pool.
     /// @dev Avoid too many pools, and a single transaction cannot be fully executed for all pools.
     function updatePools(uint256[] calldata pids) external onlyOwnerOrOperator {
         uint32 currentTime = uint32(block.timestamp);
@@ -806,24 +810,24 @@ contract MasterChef is INonfungiblePositionManagerStruct, Multicall, Ownable, Re
         if (!success) revert();
     }
 
-    /// @notice Safe Transfer CAKE.
-    /// @param _to The CAKE receiver address.
-    /// @param _amount Transfer CAKE amounts.
+    /// @notice Safe Transfer BGATE.
+    /// @param _to The BGATE receiver address.
+    /// @param _amount Transfer BGATE amounts.
     function _safeTransfer(address _to, uint256 _amount) internal {
         if (_amount > 0) {
-            uint256 balance = CAKE.balanceOf(address(this));
+            uint256 balance = BGATE.balanceOf(address(this));
             if (balance < _amount) {
                 _amount = balance;
             }
-            // Update cakeAmountBelongToMC
+            // Update BGATEAmountBelongToMC
             unchecked {
-                if (cakeAmountBelongToMC >= _amount) {
-                    cakeAmountBelongToMC -= _amount;
+                if (BGATEAmountBelongToMC >= _amount) {
+                    BGATEAmountBelongToMC -= _amount;
                 } else {
-                    cakeAmountBelongToMC = balance - _amount;
+                    BGATEAmountBelongToMC = balance - _amount;
                 }
             }
-            CAKE.safeTransfer(_to, _amount);
+            BGATE.safeTransfer(_to, _amount);
         }
     }
 
