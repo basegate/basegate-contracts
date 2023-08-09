@@ -55,12 +55,14 @@ const baseTestnet: NetworkUserConfig = {
   url: 'https://goerli.base.org',
   chainId: 84531,
   accounts: [process.env.KEY_TESTNET!],
+  gasPrice: 21000000,
 }
 
 const baseMainnet: NetworkUserConfig = {
   url: 'https://mainnet.base.org',
   chainId: 8453,
   accounts: [process.env.KEY_MAINNET!],
+  gasPrice: 21000000,
 }
 
 export default {
