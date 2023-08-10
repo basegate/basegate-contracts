@@ -1,4 +1,3 @@
-import { tryVerify } from '@basegate_io/common/verify'
 import { ContractFactory } from 'ethers'
 import { ethers, network } from 'hardhat'
 import fs from 'fs'

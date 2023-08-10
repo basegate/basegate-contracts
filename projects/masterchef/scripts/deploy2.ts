@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 import { ethers, run, network } from "hardhat";
 import { configs } from "@basegate_io/common/config";
-import { tryVerify } from "@basegate_io/common/verify";
 import { writeFileSync } from "fs";
 
 async function main() {
@@ -26,7 +25,6 @@ async function main() {
   const masterChef = await MasterChef.deploy(config.bgate, positionManager_address, config.WNATIVE);
 
   console.log("masterChef deployed to:", masterChef.address);
-  // await tryVerify(masterChefV3, [config.cake, positionManager_address]);
 
   // Write the address to a file.
   writeFileSync(

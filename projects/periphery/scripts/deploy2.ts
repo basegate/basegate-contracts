@@ -2,7 +2,6 @@ import bn from 'bignumber.js'
 import { Contract, ContractFactory, utils, BigNumber } from 'ethers'
 import { ethers, upgrades, network } from 'hardhat'
 import { linkLibraries } from '../util/linkLibraries'
-import { tryVerify } from '@basegate_io/common/verify'
 import { configs } from '@basegate_io/common/config'
 import fs from 'fs'
 
@@ -70,17 +69,14 @@ async function main() {
   const SwapRouter = new ContractFactory(artifacts.SwapRouter.abi, artifacts.SwapRouter.bytecode, owner)
   const swapRouter = await SwapRouter.deploy(baseGatePoolDeployer_address, baseGateFactory_address, config.WNATIVE)
 
-  // await tryVerify(swapRouter, [baseGatePoolDeployer_address, baseGateFactory_address, config.WNATIVE])
   console.log('swapRouter', swapRouter.address)
 
   // const NFTDescriptor = new ContractFactory(artifacts.NFTDescriptor.abi, artifacts.NFTDescriptor.bytecode, owner)
   // const nftDescriptor = await NFTDescriptor.deploy()
-  // await tryVerify(nftDescriptor)
   // console.log('nftDescriptor', nftDescriptor.address)
 
   // const NFTDescriptorEx = new ContractFactory(artifacts.NFTDescriptorEx.abi, artifacts.NFTDescriptorEx.bytecode, owner)
   // const nftDescriptorEx = await NFTDescriptorEx.deploy()
-  // await tryVerify(nftDescriptorEx)
   // console.log('nftDescriptorEx', nftDescriptorEx.address)
 
   // const linkedBytecode = linkLibraries(
@@ -113,11 +109,6 @@ async function main() {
   //   nftDescriptorEx.address
   // )
 
-  // await tryVerify(nonfungibleTokenPositionDescriptor, [
-  //   config.WNATIVE,
-  //   asciiStringToBytes32(config.nativeCurrencyLabel),
-  //   nftDescriptorEx.address,
-  // ])
   // console.log('nonfungibleTokenPositionDescriptor', nonfungibleTokenPositionDescriptor.address)
 
   // off chain version
@@ -133,8 +124,6 @@ async function main() {
   await nonfungibleTokenPositionDescriptor.deployed()
   console.log('nonfungibleTokenPositionDescriptor', nonfungibleTokenPositionDescriptor.address)
 
-  // await tryVerify(nonfungibleTokenPositionDescriptor)
-
   const NonfungiblePositionManager = new ContractFactory(
     artifacts.NonfungiblePositionManager.abi,
     artifacts.NonfungiblePositionManager.bytecode,
@@ -147,12 +136,6 @@ async function main() {
     nonfungibleTokenPositionDescriptor.address
   )
 
-  // await tryVerify(nonfungiblePositionManager, [
-  //   baseGatePoolDeployer_address,
-  //   baseGateFactory_address,
-  //   config.WNATIVE,
-  //   nonfungibleTokenPositionDescriptor.address,
-  // ])
   console.log('nonfungiblePositionManager', nonfungiblePositionManager.address)
 
   const BaseGateInterfaceMulticall = new ContractFactory(
@@ -164,8 +147,6 @@ async function main() {
   const baseGateInterfaceMulticall = await BaseGateInterfaceMulticall.deploy()
   console.log('BaseGateInterfaceMulticall', baseGateInterfaceMulticall.address)
 
-  // await tryVerify(baseGateInterfaceMulticall)
-
   const V3Migrator = new ContractFactory(artifacts.V3Migrator.abi, artifacts.V3Migrator.bytecode, owner)
   const v3Migrator = await V3Migrator.deploy(
     baseGatePoolDeployer_address,
@@ -175,32 +156,19 @@ async function main() {
   )
   console.log('V3Migrator', v3Migrator.address)
 
-  // await tryVerify(v3Migrator, [
-  //   baseGatePoolDeployer_address,
-  //   baseGateFactory_address,
-  //   config.WNATIVE,
-  //   nonfungiblePositionManager.address,
-  // ])
-
   const TickLens = new ContractFactory(artifacts.TickLens.abi, artifacts.TickLens.bytecode, owner)
   const tickLens = await TickLens.deploy()
   console.log('TickLens', tickLens.address)
 
-  // await tryVerify(tickLens)
-
   const QuoterV2 = new ContractFactory(artifacts.QuoterV2.abi, artifacts.QuoterV2.bytecode, owner)
   const quoterV2 = await QuoterV2.deploy(baseGatePoolDeployer_address, baseGateFactory_address, config.WNATIVE)
   console.log('QuoterV2', quoterV2.address)
-
-  // await tryVerify(quoterV2, [baseGatePoolDeployer_address, baseGateFactory_address, config.WNATIVE])
 
   const contracts = {
     SwapRouter: swapRouter.address,
     V3Migrator: v3Migrator.address,
     QuoterV2: quoterV2.address,
     TickLens: tickLens.address,
-    // NFTDescriptor: nftDescriptor.address,
-    // NFTDescriptorEx: nftDescriptorEx.address,
     NonfungibleTokenPositionDescriptor: nonfungibleTokenPositionDescriptor.address,
     NonfungiblePositionManager: nonfungiblePositionManager.address,
     BaseGateInterfaceMulticall: baseGateInterfaceMulticall.address,

@@ -1,9 +1,7 @@
 /* eslint-disable camelcase */
-import { ethers, run, network } from "hardhat";
+import { ethers, network } from "hardhat";
 import { Contract } from "ethers";
 import { configs } from "@basegate_io/common/config";
-import { tryVerify } from "@basegate_io/common/verify";
-import { writeFileSync } from "fs";
 
 const abi = [
   {

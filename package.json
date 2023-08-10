@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "compile": "yarn workspaces run compile",
+    "verify": "NETWORK=$NETWORK yarn workspaces run verify",
     "test": "yarn workspaces run test"
   },
   "devDependencies": {

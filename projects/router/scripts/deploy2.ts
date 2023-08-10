@@ -25,7 +25,6 @@ async function main() {
   const SmartRouterHelper = await ethers.getContractFactory('SmartRouterHelper')
   const smartRouterHelper = await SmartRouterHelper.deploy()
   console.log('SmartRouterHelper deployed to:', smartRouterHelper.address)
-  // await tryVerify(smartRouterHelper)
 
   /** SmartRouter */
   console.log('Deploying SmartRouter...')
@@ -45,16 +44,6 @@ async function main() {
   )
   console.log('SmartRouter deployed to:', smartRouter.address)
 
-  // await tryVerify(smartRouter, [
-  //   config.v2Factory,
-  //   baseGatePoolDeployer_address,
-  //   baseGateFactory_address,
-  //   positionManager_address,
-  //   config.stableFactory,
-  //   config.stableInfo,
-  //   config.WNATIVE,
-  // ])
-
   /** MixedRouteQuoterV1 */
   const MixedRouteQuoterV1 = await ethers.getContractFactory('MixedRouteQuoterV1', {
     libraries: {
@@ -70,14 +59,6 @@ async function main() {
   )
   console.log('MixedRouteQuoterV1 deployed to:', mixedRouteQuoterV1.address)
 
-  // await tryVerify(mixedRouteQuoterV1, [
-  //   baseGatePoolDeployer_address,
-  //   baseGateFactory_address,
-  //   config.v2Factory,
-  //   config.stableFactory,
-  //   config.WNATIVE,
-  // ])
-
   /** QuoterV2 */
   const QuoterV2 = await ethers.getContractFactory('QuoterV2', {
     libraries: {
@@ -87,8 +68,6 @@ async function main() {
   const quoterV2 = await QuoterV2.deploy(baseGatePoolDeployer_address, baseGateFactory_address, config.WNATIVE)
   console.log('QuoterV2 deployed to:', quoterV2.address)
 
-  // await tryVerify(quoterV2, [baseGatePoolDeployer_address, baseGateFactory_address, config.WNATIVE])
-
   /** TokenValidator */
   const TokenValidator = await ethers.getContractFactory('TokenValidator', {
     libraries: {
@@ -97,8 +76,6 @@ async function main() {
   })
   const tokenValidator = await TokenValidator.deploy(config.v2Factory, positionManager_address)
   console.log('TokenValidator deployed to:', tokenValidator.address)
-
-  // await tryVerify(tokenValidator, [config.v2Factory, positionManager_address])
 
   const contracts = {
     SmartRouter: smartRouter.address,
