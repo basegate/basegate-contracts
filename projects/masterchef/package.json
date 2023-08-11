@@ -19,6 +19,7 @@
   "scripts": {
     "format:check": "prettier --check './**/*.{js,ts,sol}'",
     "format:write": "prettier --write './**/*.{js,ts,sol}'",
+    "verify": "NETWORK=$NETWORK bash ./scripts/verify.sh",
     "test": "npx hardhat test",
     "compile": "npx hardhat compile"
   },

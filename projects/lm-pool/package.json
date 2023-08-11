@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "compile": "hardhat compile",
+    "verify": "NETWORK=$NETWORK bash ./scripts/verify.sh",
     "test": "echo 'skip'"
   },
   "devDependencies": {

@@ -21,7 +21,8 @@
     "deploy:mainnet": "npx hardhat run --network mainnet scripts/deploy.ts",
     "test": "echo 'skip'",
     "test:coverage": "npx hardhat coverage",
-    "test:size-contracts": "npx hardhat size-contracts"
+    "test:size-contracts": "npx hardhat size-contracts",
+    "verify": "NETWORK=$NETWORK bash ./scripts/verify.sh"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",

@@ -1,11 +1,7 @@
 #!/usr/bin/env zx
-// import 'zx/globals'
-
 const networks = {
-  eth: 'eth',
-  goerli: 'goerli',
-  bscMainnet: 'bscMainnet',
-  bscTestnet: 'bscTestnet',
+  baseMainnet: 'baseMainnet',
+  baseTestnet: 'baseTestnet',
   hardhat: 'hardhat',
 }
 
@@ -15,14 +11,14 @@ if (!network || !networks[network]) {
   throw new Error(`env NETWORK: ${network}`)
 }
 
-await $`yarn workspace @basegate_io/v3-core run hardhat run scripts/verify.ts --network ${network}`
+await $`yarn workspace @basegate_io/core run verify`
 
-await $`yarn workspace @basegate_io/v3-periphery run hardhat run scripts/verify.ts --network ${network}`
+await $`yarn workspace @basegate_io/periphery run verify`
 
-await $`yarn workspace @basegate_io/smart-router run hardhat run scripts/verify.ts --network ${network}`
+await $`yarn workspace @basegate_io/smart-router run verify`
 
-await $`yarn workspace @basegate_io/masterchef-v3 run hardhat run scripts/verify.ts --network ${network}`
+await $`yarn workspace @basegate_io/masterchef run verify`
 
-await $`yarn workspace @basegate_io/v3-lm-pool run hardhat run scripts/verify.ts --network ${network}`
+await $`yarn workspace @basegate_io/lm-pool run verify`
 
 console.log(chalk.blue('Done!'))
